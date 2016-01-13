@@ -2,7 +2,7 @@
 /**
  * Decorator that inserts debugging hints into the rendered block contents
  *
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -20,7 +20,7 @@ class DebugHints extends \Magento\Developer\Model\TemplateEngine\Decorator\Debug
     /**
      * @var bool
      */
-    private $_showBlockHints;
+    private $showBlockHints;
 
     /**
      * @param \Magento\Framework\View\TemplateEngineInterface $subject
@@ -29,7 +29,7 @@ class DebugHints extends \Magento\Developer\Model\TemplateEngine\Decorator\Debug
     public function __construct(\Magento\Framework\View\TemplateEngineInterface $subject, $showBlockHints)
     {
         $this->_subject = $subject;
-        $this->_showBlockHints = $showBlockHints;
+        $this->showBlockHints = $showBlockHints;
     }
 
     /**
@@ -40,7 +40,7 @@ class DebugHints extends \Magento\Developer\Model\TemplateEngine\Decorator\Debug
     public function render(\Magento\Framework\View\Element\BlockInterface $block, $templateFile, array $dictionary = [])
     {
         $orgHtml = $this->_subject->render($block, $templateFile, $dictionary);
-        if ($this->_showBlockHints) {
+        if($this->showBlockHints){
             $blockHits = $this->_renderBlockHints("", $block);
         }
         $templateHits = $this->_renderTemplateHints("", $templateFile);
