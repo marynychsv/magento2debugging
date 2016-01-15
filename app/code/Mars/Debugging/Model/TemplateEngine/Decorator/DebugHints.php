@@ -8,11 +8,11 @@
 
 namespace Mars\Debugging\Model\TemplateEngine\Decorator;
 
-use Magento\Developer\Model\TemplateEngine\Decorator\DebugHints as RDebugHits;
+use Magento\Developer\Model\TemplateEngine\Decorator\DebugHints as RootDebugHits;
 use Magento\Framework\View\TemplateEngineInterface;
 use Magento\Framework\View\Element\BlockInterface;
 
-class DebugHints extends RDebugHits
+class DebugHints extends RootDebugHits
 {
     /**
      * @var \Magento\Framework\View\TemplateEngineInterface
@@ -26,8 +26,7 @@ class DebugHints extends RDebugHits
 
     /**
      * @param \Magento\Framework\View\TemplateEngineInterface $subject
-     * @param bool $showBlockHints Whether to include block into
-     *              the debugging information or not
+     * @param bool $showBlockHints Whether to include block into the debugging information or not
      */
     public function __construct(
         TemplateEngineInterface $subject,
@@ -54,9 +53,7 @@ class DebugHints extends RDebugHits
             $blockHits = $this->_renderBlockHints("", $block);
         }
         $templateHits = $this->_renderTemplateHints("", $templateFile);
-        $result = $this->_renderBlockDescription(
-            $templateHits, $blockHits, $orgHtml
-        );
+        $result = $this->_renderBlockDescription($templateHits, $blockHits, $orgHtml);
         return $result;
     }
 
@@ -95,10 +92,7 @@ HTML;
      *
      * @return string
      */
-    protected function _renderBlockHints(
-        $blockHtml,
-        BlockInterface $block
-    )
+    protected function _renderBlockHints($blockHtml,BlockInterface $block)
     {
         $blockClass = get_class($block);
         $blockLayoutNamePath = $this->_getBlockNamePath($block);
@@ -123,11 +117,7 @@ layout-name-path = "{$blockLayoutNamePath}"
 HTML;
     }
 
-    protected function _renderBlockDescription(
-        $templateHits,
-        $blockHits,
-        $orgHtml
-    )
+    protected function _renderBlockDescription($templateHits,$blockHits,$orgHtml)
     {
         return <<<HTML
 <div
