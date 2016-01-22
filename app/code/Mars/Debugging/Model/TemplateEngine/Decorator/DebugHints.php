@@ -11,7 +11,14 @@ namespace Mars\Debugging\Model\TemplateEngine\Decorator;
 use Magento\Developer\Model\TemplateEngine\Decorator\DebugHints as RootDebugHits;
 use Magento\Framework\View\TemplateEngineInterface;
 use Magento\Framework\View\Element\BlockInterface;
+use Magento\Framework\View\Element\AbstractBlock;
+use \Magento\Framework\View\LayoutInterface;
 
+/**
+ * Class DebugHints
+ *
+ * @package Mars\Debugging\Model\TemplateEngine\Decorator
+ */
 class DebugHints extends RootDebugHits
 {
     /**
@@ -28,10 +35,7 @@ class DebugHints extends RootDebugHits
      * @param \Magento\Framework\View\TemplateEngineInterface $subject
      * @param bool $showBlockHints Whether to include block into the debugging information or not
      */
-    public function __construct(
-        TemplateEngineInterface $subject,
-        $showBlockHints
-    )
+    public function __construct(TemplateEngineInterface $subject, $showBlockHints)
     {
         $this->_subject = $subject;
         $this->_showBlockHints = $showBlockHints;
@@ -117,6 +121,13 @@ layout-name-path = "{$blockLayoutNamePath}"
 HTML;
     }
 
+    /**
+     * @param $templateHits
+     * @param $blockHits
+     * @param $orgHtml
+     *
+     * @return string
+     */
     protected function _renderBlockDescription($templateHits,$blockHits,$orgHtml)
     {
         return <<<HTML
@@ -137,12 +148,37 @@ HTML;
 HTML;
     }
 
-    protected function _getBlockNamePath($block)
+    /**
+     * @param AbstractBlock $block
+     *
+     * @return string
+     */
+    protected function _getBlockNamePath(AbstractBlock $block)
     {
+        $layout = $block->getLayout();
         $blockName = $block->getNameInLayout();
-        $parentBlock = $block->getParentBlock();
-        $path = (isset($parentBlock) && $parentBlock !== false)
-            ? $this->_getBlockNamePath($parentBlock) : null;
+        $path = $this->_getElementPath($layout, $blockName);
         return (isset($path)) ? $path . " / " . $blockName : $blockName;
+    }
+
+    /**
+     * @param string $nameElement
+     * @param LayoutInterface $layout
+     *
+     * @return null|string
+     */
+    protected function _getElementPath(LayoutInterface $layout, $nameElement)
+    {
+        $parentName = $layout->getParentName($nameElement);
+        if(!$parentName)
+            return null;
+
+        $parentBlock = $layout->getBlock($parentName);
+        $pathName = ($parentBlock) ? $parentName : "[{$parentName}]";
+
+        $path = (isset($parentName) && $parentName !== false)
+            ? $this->_getElementPath($layout, $parentName) : null;
+
+        return (isset($path)) ? $path . " / " . $pathName : $pathName;
     }
 }
