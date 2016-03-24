@@ -1,0 +1,14 @@
+{
+    "name": "mars/debugging",
+    "type": "magento-module",
+    "description": "Debugging",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "dev-master"
+    },
+    "license": "OSL-3.0",
+    "authors":[
+        {
+            "name":"Sasha Marinich"
+        }
+    ]
+}
