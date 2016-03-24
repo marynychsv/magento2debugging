@@ -2,7 +2,7 @@
     "name": "mars/debugging",
     "type": "magento-module",
     "description": "Debugging",
-    "require": {
+    "suggest": {
         "magento-hackathon/magento-composer-installer": "3.0.4"
     },
     "license": "OSL-3.0",
