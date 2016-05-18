@@ -1,6 +1,6 @@
 {
     "name": "mars/debugging",
-    "type": "library",
+    "type": "magento-module",
     "description": "Debugging",
     "license": "OSL-3.0",
     "authors":[
